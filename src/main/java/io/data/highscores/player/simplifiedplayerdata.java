@@ -4,12 +4,13 @@ import java.security.PrivateKey;
 
 public class simplifiedplayerdata {
     private String userName;
+    private static long LVL_FACTOR = 2000000;
     private long lvl;
     private long score;
 
     public simplifiedplayerdata(String userName, long score) {
         this.userName = userName;
-        this.lvl = score/2000000;
+        this.lvl = score/LVL_FACTOR;
         this.score = score;
     }
 
