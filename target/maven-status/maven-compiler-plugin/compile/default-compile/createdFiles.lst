@@ -1,0 +1,5 @@
+io\data\highscores\player\playerrepository.class
+io\data\highscores\player\player.class
+io\data\highscores\player\playercontroller.class
+io\data\highscores\highscoresapi.class
+io\data\highscores\player\playerservice.class
