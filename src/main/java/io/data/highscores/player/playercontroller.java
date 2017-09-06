@@ -18,25 +18,37 @@ public class playercontroller {
     @Autowired
     private playerservice playerService;
 
-    @RequestMapping("/players")
+    @RequestMapping(method = RequestMethod.GET, value = "/players")
     public List<simplifiedplayerdata> getAllPlayers() {
         logger.info("Request for all players");
         return playerService.getPlayers(false);
     }
 
-    @RequestMapping("/players/{name}")
-    public player getPlayer(@PathVariable String name) {
+    @RequestMapping(method = RequestMethod.GET, value = "/players/{name}")
+    public ResponseEntity<String> getPlayer(@PathVariable String name) {
         logger.info("Getting info");
-        return playerService.getPlayer(name);
+        player player = playerService.getPlayer(name);
+        Map<String,String > body = new HashMap<String, String>();
+        if (player == null) {
+            body.put("error", "404");
+            body.put("message", name+" not found.");
+            return new ResponseEntity(body, HttpStatus.NOT_FOUND);
+
+        }
+        simplifiedplayerdata simplifiedPlayerData = new simplifiedplayerdata(player.getUserName(),player.getxp());
+        body.put("userName", simplifiedPlayerData.getUserName());
+        body.put("LVL", Long.toString(simplifiedPlayerData.getLvl()));
+        body.put("Score", Long.toString(simplifiedPlayerData.getScore()));
+        return new ResponseEntity(body, HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping("/players/topten")
+    @RequestMapping(method = RequestMethod.GET, value = "/players/topten")
     public List<simplifiedplayerdata> getTopTen (){
         logger.info("Request for top 10 players");
         return playerService.getPlayers(true);
     }
 
-    @RequestMapping("/players/extended")
+    @RequestMapping(method = RequestMethod.GET, value ="/players/extended")
     public List<player> getExtendedPlayers() {
         logger.info("Request for extended player data");
         return playerService.getExtendedPlayers();
